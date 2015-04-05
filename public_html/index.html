@@ -6,87 +6,83 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>CarbCalc</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-        <script type="text/javascript">
-            var app = angular.module('CarbCalc', []);
-            app.controller('CalcCtrl', ['$scope', function ($scope) {
-                    $scope.unit = 'g';
-                    $scope.units = ['g', 'dl']
-                    $scope.base_weight = 100;
-                    $scope.calc = function () {
-                        var result = $scope.amount * ($scope.base_carb / $scope.base_weight);
-                        if (isNaN(result)) {
-                            return null;
-                        } else {
-                            return Math.round(result * 100) / 100;
-                        }
-                    };
-                }]);
-        </script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+        <script type="text/javascript" src="./carbcalc.js"></script>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
         <style type="text/css">
-            .calc-form {
-                max-width: 300px;
+            .app-container {
+                max-width: 500px;
             }
-            .unit {
-                width: 30px;
-            }
-            .number {
-                width: 100px;
+            form {
+                color: #fff;
+                background-color: #777;
+                padding-top: 10px;
+                padding-bottom: 15px;
             }
         </style>
     </head>
     <body>
-        <div ng-app="CarbCalc"
-             class="">
+        <div ng-app="CarbCalc">
             <div ng-controller="CalcCtrl"
-                 class="container form-horizontal">
-
-                <div class="form-group">
-                    <label class="col-sm-4">Produkt</label>
-                    <div class="col-sm-8 row">
-                        <div class="col-xs-5">
-                            <input type="number"
-                                   ng-model="base_carb"
-                                   class="form-control input-sm"
-                                   placeholder="kolhydrater" />
-                        </div>
-                        <div class="col-xs-2">/</div>
-                        <div class="col-xs-5">
+                 class="container app-container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1>CarbCalc</h1>
+                    </div>
+                </div>
+                <form class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4">Produktinfo</label>
+                        <div class="col-sm-8">
                             <div class="input-group">
                                 <input type="number"
-                                       ng-model="base_weight"
-                                       class="form-control input-sm"/>
-                                <div class="input-group-addon">g</div>
+                                       ng-model="base_carb"
+                                       class="form-control input-sm"
+                                       placeholder="kolhydrater" />
+                                <div class="input-group-addon">
+                                    <span ng-bind="unit"></span> /
+                                    <span ng-bind="base_weight"></span>
+                                    <span ng-bind="unit"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4" for="amount">
-                        Mängd
-                    </label>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="number"
-                                   id="amount"
-                                   ng-model="amount"
-                                   class="form-control input-sm" />
-                            <div class="input-group-addon">g</div>
+                    <div class="form-group">
+                        <label class="col-sm-4" for="amount">
+                            Mängd
+                        </label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number"
+                                       id="amount"
+                                       ng-model="amount"
+                                       class="form-control input-sm" />
+                                <div class="input-group-addon"
+                                     ng-bind="unit"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-4">Kolhydrater totalt</label> 
-                    <div class="col-sm-8">
-                        <strong ng-bind="calc();" ></strong>
+                    <div class="form-group"
+                         ng-class="{'has-warning':result_status === 'warning', 'has-success':result_status === 'success'}">
+                        <label class="col-sm-4">Kolhydrater totalt</label> 
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       readonly
+                                       ng-model="result"
+                                       placeholder="Värde saknas"/>
+                                <div class="input-group-addon"
+                                     ng-bind="unit"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </body>
