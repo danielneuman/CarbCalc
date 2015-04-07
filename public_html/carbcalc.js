@@ -12,23 +12,23 @@
     var app, math;
     math = angular.module('GenericMath', []);
     math.service('calcFn', function () {
-        this.decimalAdjust = function(type, value, exp) {
-          // If the exp is undefined or zero...
-          if (typeof exp === 'undefined' || +exp === 0) {
-            return Math[type](value);
-          }
-          value = +value;
-          exp = +exp;
-          // If the value is not a number or the exp is not an integer...
-          if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-            return NaN;
-          }
-          // Shift
-          value = value.toString().split('e');
-          value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-          // Shift back
-          value = value.toString().split('e');
-          return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+        this.decimalAdjust = function (type, value, exp) {
+            // If the exp is undefined or zero...
+            if (typeof exp === 'undefined' || +exp === 0) {
+                return Math[type](value);
+            }
+            value = +value;
+            exp = +exp;
+            // If the value is not a number or the exp is not an integer...
+            if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+                return NaN;
+            }
+            // Shift
+            value = value.toString().split('e');
+            value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+            // Shift back
+            value = value.toString().split('e');
+            return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
         };
     });
     app = angular.module('CarbCalc', ['GenericMath']);
@@ -65,21 +65,20 @@
             return calcFn.decimalAdjust('round', value, +decimals);
         };
     }]);
-    app.controller('CalcCtrl', ['$scope', 'appCalc', 'resultStatus',
-        function ($scope, appCalc, resultStatus) {
-            $scope.unit = 'g';
-            $scope.base_weight = 100;
-            $scope.$watch('amount', function (amount) {
-                $scope.result = appCalc.calcResult(amount, $scope.base_carb, $scope.base_weight);
-            });
-            $scope.$watch('base_carb', function (base_carb) {
-                $scope.result = appCalc.calcResult($scope.amount, base_carb, $scope.base_weight);
-            });
-            $scope.$watch('base_weight', function (base_weight) {
-                $scope.result = appCalc.calcResult($scope.amount, $scope.base_carb, base_weight);
-            });
-            $scope.$watch('result', function (result) {
-                $scope.result_status = resultStatus.get(result);
-            });
-        }]);
+    app.controller('CalcCtrl', ['$scope', 'appCalc', 'resultStatus', function ($scope, appCalc, resultStatus) {
+        $scope.unit = 'g';
+        $scope.base_weight = 100;
+        $scope.$watch('amount', function (amount) {
+            $scope.result = appCalc.calcResult(amount, $scope.base_carb, $scope.base_weight);
+        });
+        $scope.$watch('base_carb', function (base_carb) {
+            $scope.result = appCalc.calcResult($scope.amount, base_carb, $scope.base_weight);
+        });
+        $scope.$watch('base_weight', function (base_weight) {
+            $scope.result = appCalc.calcResult($scope.amount, $scope.base_carb, base_weight);
+        });
+        $scope.$watch('result', function (result) {
+            $scope.result_status = resultStatus.get(result);
+        });
+    }]);
 }());
